@@ -43,7 +43,7 @@ using namespace std;
 	    }
 		
 	} 
-	
+	//function that shifts the LL by moving the last link to the front
 	template <class T>
 	void DLL2<T>::shift(){
 		
@@ -67,11 +67,6 @@ using namespace std;
 	int DLL2<T>::length() {
 		return count;
 	}
-
-	/*template<typename T>
-	void DLL2<T>::initializeList() {
-		destroyList();
-	}*/
 	
 	template <class T>
 	bool DLL2<T>::isEmptyList() const {
