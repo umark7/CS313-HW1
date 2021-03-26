@@ -10,8 +10,6 @@ using std::chrono::duration_cast;
 using std::chrono::seconds;
 using std::chrono::milliseconds;
 
-//They do not run together, you would have to uncomment each question with the corresponding header to see the answer
-
 #include "question1.h"
 #include "question2.h"
 #include "question3.h"
