@@ -3,6 +3,7 @@ Question 7 - Umar Kagzi
 C++ has several containers (https://www.cplusplus.com/reference/stl/). Pick three of
 them and compare similar operations by timing them on a large scale. Explain a
 hypothesis, your results, and your explanation.
+Code has been compiled into a single file for easier readability.
 */
 
 #include <iostream>
