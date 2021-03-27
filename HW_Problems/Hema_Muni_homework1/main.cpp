@@ -57,14 +57,14 @@ int main() {
 
     //filling them with random strings with move semantics
     Vec<char> v3;
-    auto v4 = move(v3);
-    auto v4milliseconds = TimeFunc([&]() {buildStringVector(size,v4); });
-    cout << "move semantic vector time: " << v4milliseconds << endl;
+    auto v3milliseconds = TimeFunc([&]() { buildStringVector(size, v3); });
+    auto v4 = move(v3milliseconds);
+    cout << "move semantic vector time: " << v4<< endl;
 
     LinkedList<char> l3;
-    auto l4 = move(l3);
-    auto l4milliseconds = TimeFunc([&]() {BuildList(size,l4); });
-    cout << "move semantic linked list time: " << l4milliseconds << endl;
+    auto l3milliseconds = TimeFunc([&]() { BuildList(size, l3); });
+    auto l4 = move(l3milliseconds);
+    cout << "move semantic linked list time: " << l4 << endl;
     cout << endl;
 
     cout << "Question 2: " << endl;
