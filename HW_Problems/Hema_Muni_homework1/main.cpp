@@ -68,11 +68,10 @@ int main() {
     cout << endl;
 
     cout << "Question 2: " << endl;
-    int n = 10000;
-    int arr1[n];
+    int n = 10000000;
+    int* arr1 = new int[n];
     for(int i = 0; i < n; i++){
-        int tempVar = generateRand(n);
-        arr1[i] = tempVar;
+        arr1[i] = (rand()% n) + 1;
     }
 
     sort(arr1, arr1 + n);
