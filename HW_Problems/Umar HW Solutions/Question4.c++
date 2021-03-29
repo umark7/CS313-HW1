@@ -1,14 +1,10 @@
-
 /*
-Question 4
+Question 4 - Umar Kagzi
 4. Compare the times it takes to sort an array filled with random numbers vs a linked list via
 bubble sort and insertion sort.
 */
 
-// step 3 - sort the linked list with bubble sort and insertion sort 
-// step 4 - record & print times at end, make whitepaper and video record you going through the code 
-//timing things
-
+// NOTE: ALL CODE IN A SINGLE FILE TO MAKE READABILITY EASIER
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -18,80 +14,141 @@ bubble sort and insertion sort.
 #include <bits/stdc++.h>
 #include <ctime>
 #include <ratio>
-#include <ostream>
 #include <algorithm>
-
+#include <chrono>
+#include <thread>
+#include <ctime>
+#include <ostream>
+#include <stdlib.h>
+#include <time.h>
 using namespace std;
 using namespace std::chrono;
 
-
-void bubbleSortArray(int array[], int n);
+// Function Declarations
+void bubbleSortArray(int array[], int n); 
 void insertionSortArray(int arr[], int arrSize);
-void push(struct Node** head_ref, int new_data);
-void sortedInsert(struct Node**, struct Node*);
+class Node* swap(Node* p1, Node* p2);
+void insertList(struct Node **start_ref, int data);
+void bubbleSortList(struct Node *start);
+void swap1(struct Node *a, struct Node *b);
+void printList(struct Node *start);
 
-struct Node
-{
-    int data;
-    struct Node* next;
+// Node Class Declaration for LL
+class Node {
+    public:
+        int data;
+        Node* next;
+};
+class Node* swap(Node* p1, Node* p2) { // swap function to use in LL sorts
+    Node* temp = p2->next;
+    p2->next = p1;
+    p1->next = temp;
+    return p2;
+}
+// List class initialized
+class List {
+private:
+    Node* head;
+public:
+    List() { 
+        head = NULL; 
+    }
+    void insertList(int d) { // use to insert value into list
+        Node* n = new Node;
+        n ->data = d;
+        n ->next = NULL;
+        if (head == NULL) {
+            head = n;
+        } else {
+            Node* temp = head;
+            while (temp->next != NULL)
+                temp = temp->next;
+                temp->next = n;
+        }
+    }
+    void traverseList() { // traverses the list and sorts it 
+        Node* temp = head;
+        while (temp != NULL) {
+            //cout << temp->data << " ";
+            temp = temp->next;
+        }
+        //cout << endl;
+    }
 };
 
 
-high_resolution_clock::time_point start = high_resolution_clock::now();
-high_resolution_clock::time_point endTime = high_resolution_clock::now();
-duration<double> time_span = duration_cast<std::chrono::nanoseconds>(endTime - start);
-float ns = time_span.count();
-
-
+// Main Function, all tests done here
 int main()
 {
-
+    // Default Size for All Arrays, instantiate them here
 	srand(time(nullptr));
-	const int SIZE = 1000000;
-
+	const int SIZE = 10000;
 	int array[SIZE]; //initialize array of size 10
+    int array2[SIZE];
 
-	// Filling Array & Testing
-
+	// Filling Array with random #'s & Testing
 	for (int i = 0; i < SIZE; i++) {
 		array[i] = rand() % 10;
 	}
+
 	// Now Sort Array Using Bubble and Insertion, time the process
-	start;
-	bubbleSortArray(array, 1000000);
-	endTime;
-	time_span;
-	cout << "Bubble Sort Array timing: " << ns << " Nanoseconds." << endl;
+	high_resolution_clock::time_point start1 = high_resolution_clock::now();
+	bubbleSortArray(array, 10000);
+	high_resolution_clock::time_point end1 = high_resolution_clock::now();
+	auto duration1 = duration_cast<std::chrono::milliseconds>(end1 - start1);
+    cout << "Bubble Sort Array timing: " << duration1.count() << " milliseconds" << endl;
 
 	// Sort Array using Insertion Sort
-	start;
-	insertionSortArray(array, 1000000);
-	endTime;
-	time_span;
-	cout << "Insertion Sort Array timing: " << ns << " Nanoseconds." << endl;
+	high_resolution_clock::time_point start2 = high_resolution_clock::now();
+	insertionSortArray(array2, 10000);
+	high_resolution_clock::time_point end2 = high_resolution_clock::now();
+	auto duration2 = duration_cast<std::chrono::milliseconds>(end2 - start2);
+	cout << "Insertion Sort Array timing: " << duration2.count() << " milliseconds" << endl;
 
-	
-	// Declare New Linked List
 
 	// Timings for Linked List in Bubble vs Insertion
-	// TODO MAKE LIST, ADD RANDOM NUMS, AND MAKE BUBBLELIST FUNCTION 
-	start;
-	bubbleSortList(array, 1000000);
-	endTime;
-	time_span;
-	cout << "\nBubble Sort List timing: " << ns << " Nanoseconds." << endl;
 
-	start;
-	insertionSortList(array, 1000000);
-	endTime;
-	time_span;
-	cout << "Insertion Sort List timing: " << ns << " Nanoseconds." << endl;
+
+    // Instantiate List and fill with random numbers
+    int list1[SIZE];
+    for (int i = 0; i < SIZE; i++) {
+        int ranNum = rand() & 10;
+        list1[i] = ranNum;
+    }
+
+    // Make Empty Linked list
+    Node *begin1 = NULL; // set first node to null
+    // Create LL from the Array
+    for (int i = 0; i < SIZE; i++) {
+        insertList(&begin1, list1[i]);
+    }
+
+    // Sort LL using Bubblesort, since we have a random LL.
+	high_resolution_clock::time_point start3 = high_resolution_clock::now();
+	bubbleSortList(begin1);
+	high_resolution_clock::time_point end3 = high_resolution_clock::now();
+	auto duration3 = duration_cast<std::chrono::milliseconds>(end3 - start3);
+	cout << "Bubble Sort LL timing: " << duration3.count() << " milliseconds" << endl;
+
+
+    // Sort LL using Insertion Sort
+    // Instantiate List from array and fill with random numbers
+    List list2;
+    for (int i = 0; i < SIZE; i++) {
+        int randNum = rand() % 100;
+        list2.insertList(i);
+    }
+    high_resolution_clock::time_point start4 = high_resolution_clock::now();
+	list2.traverseList(); // list is traversed and sorted via insertion with this
+	high_resolution_clock::time_point end4 = high_resolution_clock::now();
+	auto duration4 = duration_cast<std::chrono::milliseconds>(end4 - start4);
+	cout << "Insertion Sort List timing: " << duration4.count() << " milliseconds" << endl;
 	
 }
 
+// Sorting Functions Listed Below
 
-
-
+// Bubble sort function for array - adapted from your code
 void bubbleSortArray(int array[], int n)  {  
     int i, j;  
     for (i = 0; i < n-1; i++) {
@@ -105,124 +162,69 @@ void bubbleSortArray(int array[], int n)  {
 	}
 }  
 
+// Insertion sort function for array - Adapted from your code
 void insertionSortArray(int arr[], int arrSize)
 {
     // Iterate to all array's element
     for(int i = 0; i < arrSize; ++i)
     {
-    
         int refValue = arr[i];
         int j;
-
-        for(j = i - 1; j >= 0; --j)
-        {
+        for(j = i - 1; j >= 0; j--) {
             if(arr[j] > refValue)
                 arr[j+1] = arr[j];
-            else
-                break;
+            else break;
         }
         arr[j + 1] = refValue;
     }
 }
 
-
-
-
-// function to sort a singly linked list using insertion sort
-void insertionSortList(struct Node **head_ref)
-{
-    // Initialize sorted linked list
-    struct Node *sorted = NULL;
-  
-    // Traverse the given linked list and insert every
-    // node to sorted
-    struct Node *current = *head_ref;
-    while (current != NULL)
-    {
-        // Store next for next iteration
-        struct Node *next = current->next;
-  
-        // insert current in sorted linked list
-        sortedInsert(&sorted, current);
-  
-        // Update current
-        current = next;
-    }
-  
-    // Update head_ref to point to sorted linked list
-    *head_ref = sorted;
+void insertList(struct Node **start_ref, int data){
+    struct Node *ptr1 = (struct Node*)malloc(sizeof(struct Node));
+    ptr1->data = data;
+    ptr1->next = *start_ref;
+    *start_ref = ptr1;
 }
-
-/* function to insert a new_node in a list. Note that this
-  function expects a pointer to head_ref as this can modify the
-  head of the input linked list (similar to push())*/
-void sortedInsert(struct Node** head_ref, struct Node* new_node)
-{
-    struct Node* current;
-    /* Special case for the head end */
-    if (*head_ref == NULL || (*head_ref)->data >= new_node->data)
+/* Function to print nodes in a given linked list Geeks4Geeks*/
+void printList(struct Node *start){
+    struct Node *temp = start;
+    printf("\n");
+    while (temp!=NULL)
     {
-        new_node->next = *head_ref;
-        *head_ref = new_node;
+        printf("%d ", temp->data);
+        temp = temp->next;
     }
-    else
-    {
-        /* Locate the node before the point of insertion */
-        current = *head_ref;
-        while (current->next!=NULL &&
-               current->next->data < new_node->data)
+}
+// Bubble sort the given linked list - Geeks4Geeks 
+void bubbleSortList(struct Node *start){
+    int swapped, i;
+    struct Node *ptr1;
+    struct Node *lptr = NULL;
+  
+    /* Checking for empty list */
+    if (start == NULL)
+        return;
+    do {
+        swapped = 0;
+        ptr1 = start;
+        while (ptr1->next != lptr)
         {
-            current = current->next;
+            if (ptr1->data > ptr1->next->data)
+            { 
+                swap(ptr1, ptr1->next);
+                swapped = 1;
+            }
+            ptr1 = ptr1->next;
         }
-        new_node->next = current->next;
-        current->next = new_node;
+        lptr = ptr1;
     }
+    while (swapped);
 }
-
-
-void push(struct Node** head_ref, int new_data)
+  
+// function to swap data of two nodes a and b - Geeks4Geeks
+void swap1(struct Node *a, struct Node *b)
 {
-    /* allocate node */
-    struct Node* new_node = new Node;
-  
-    /* put in the data  */
-    new_node->data  = new_data;
-  
-    /* link the old list off the new node */
-    new_node->next = (*head_ref);
-  
-    /* move the head to point to the new node */
-    (*head_ref)    = new_node;
-}
-
-
-node* buildListBackwards() {
-	node* first, * newNode;
-	int num, listSize;
-
-	cout << "How many values would you like in the list?\n";
-	cin >> listSize;
-
-	first = nullptr;
-
-	for (int i = 0; i < listSize; i++) {
-		cout << "What value would you like to insert?\n";
-		cin >> num;
-
-		newNode = new node;
-		newNode->info = num;
-		newNode->link = first;
-		first = newNode;
-	}
-	return first;
-}
-
-void printList(node* val) {
-	node* current = val;
-
-	while (current != nullptr) {
-		cout << current->info << " ";
-		current = current->link;
-	}
-	cout << endl << endl;
+    int temp = a->data;
+    a->data = b->data;
+    b->data = temp;
 }
