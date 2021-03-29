@@ -27,16 +27,6 @@ using namespace std::chrono;
 
 int itemPrice(int items[], int amount)
 
-
-template <typename Comparable>
-void mergeSort(vector<Comparable>& a,
-    vector<Comparable>& tmpArray, int left, int right);
-template <typename Comparable>
-void mergeSort(vector<Comparable>& a);
-template <typename Comparable>
-void merge(vector<Comparable>& a, vector<Comparable>& tmpArray,
-    int leftPos, int rightPos, int rightEnd);
-
 int main()
 {
 	srand(time(nullptr));
@@ -45,23 +35,36 @@ int main()
     auto start1 = high_resolution_clock::now();
     int amount = 1000;
     int items[amount];
-    cout << itemPrice(items, amount) << endl;
+    itemPrice(items, amount);
     auto end1 = high_resolution_clock::now();
     auto duration1 = duration_cast<std::chrono::microseconds>(end1 - start1);
-    cout << "The array print with my multisort took: " << duration1.count() << " microseconds" << endl;
+    cout << "The array sort with my multisort took: " << duration1.count() << " microseconds" << endl;
+
 
     // Compared against reasonable sorts (Quicksort (sort) for lower numbers, mergesort for higher numbers)
+    //Instantiate same sized array to check speed against my own sort.
+    array<int, 10000> arrayQuick; // instantiate array
+    for (int i = 0; i < amount; i++) { // Fill with random numbers, exactly the same as my own sort
+        int arrNum1 = rand() % 100 + 1 ;
+        arrayQuick[i] = arrNum1;
+    }
     auto start2 = high_resolution_clock::now();
-    std::sort(items.begin(), items.end());
+    sort(arrayQuick.begin(), arrayQuick.end()); // N*log2(N)
     auto end2 = high_resolution_clock::now();
     auto duration2 = duration_cast<std::chrono::microseconds>(end2 - start2);
-    cout << "The array print with my Quicksort took: " << duration2.count() << " microseconds" << endl;
+    cout << "The array sort with Quicksort took: " << duration2.count() << " microseconds" << endl;
 
+    // Stable Sort Array to test against my own sort
+    array<int, 10000> arrayStable; // instantiate array
+    for (int i = 0; i < amount; i++) { // Fill with random numbers, exactly the same as my own sort
+        int arrNum1 = rand() % 100 + 1 ;
+        arrayStable[i] = arrNum1;
+    }
     auto start3 = high_resolution_clock::now();
-    std::stable_sort(items.begin(), items.end());
+    stable_sort(arrayStable.begin(), arrayStable.end());
     auto end3 = high_resolution_clock::now();
     auto duration3 = duration_cast<std::chrono::microseconds>(end3 - start3);
-    cout << "The array print with stable sort took: " << duration3.count() << " microseconds" << endl;
+    cout << "The array sort with stable sort took: " << duration3.count() << " microseconds" << endl;
 } 
 
 
@@ -110,59 +113,5 @@ int itemPrice(int items[], int amount) {
     for (int i = 0; i < amount; i++) {
         cout << items[i] << " " << endl;
     }
-}
-
-// Merge sort class added, but not implemented 
-template <typename Comparable>
-void mergeSort(vector<Comparable>& a,
-    vector<Comparable>& tmpArray, int left, int right)
-{
-    if (left < right)
-    {
-        int center = (left + right) / 2;
-        mergeSort(a, tmpArray, left, center);
-        mergeSort(a, tmpArray, center + 1, right);
-        merge(a, tmpArray, left, center + 1, right);
-    }
-}
-// Driver for mergesort
-template <typename Comparable>
-void mergeSort(vector<Comparable>& a)
-{
-    vector<Comparable> tmpArray(a.size());
-
-    mergeSort(a, tmpArray, 0, a.size() - 1);
-}
-/**
- * Internal method that merges two sorted halves of a subarray.
- * a is an array of Comparable items.
- * tmpArray is an array to place the merged result.
- * leftPos is the left-most index of the subarray.
- * rightPos is the index of the start of the second half.
- * rightEnd is the right-most index of the subarray.
- */
-template <typename Comparable>
-void merge(vector<Comparable>& a, vector<Comparable>& tmpArray,
-    int leftPos, int rightPos, int rightEnd)
-{
-    int leftEnd = rightPos - 1;
-    int tmpPos = leftPos;
-    int numElements = rightEnd - leftPos + 1;
-
-    // Main loop
-    while (leftPos <= leftEnd && rightPos <= rightEnd)
-        if (a[leftPos] <= a[rightPos])
-            tmpArray[tmpPos++] = std::move(a[leftPos++]);
-        else
-            tmpArray[tmpPos++] = std::move(a[rightPos++]);
-
-    while (leftPos <= leftEnd)    // Copy rest of first half
-        tmpArray[tmpPos++] = std::move(a[leftPos++]);
-
-    while (rightPos <= rightEnd)  // Copy rest of right half
-        tmpArray[tmpPos++] = std::move(a[rightPos++]);
-
-    // Copy tmpArray back
-    for (int i = 0; i < numElements; ++i, --rightEnd)
-        a[rightEnd] = std::move(tmpArray[rightEnd]);
+	return 0;
 }
