@@ -4,6 +4,8 @@ your sort against two “reasonably comparable” sorts (you may use libraries f
 “reasonably comparable sorts”).
 */
 
+// NOTE: ALL CODE IN A SINGLE FILE TO MAKE READABILITY EASIER
+
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -35,8 +37,6 @@ template <typename Comparable>
 void merge(vector<Comparable>& a, vector<Comparable>& tmpArray,
     int leftPos, int rightPos, int rightEnd);
 
-
-
 int main()
 {
 	srand(time(nullptr));
@@ -58,13 +58,11 @@ int main()
     cout << "The array print with my Quicksort took: " << duration2.count() << " microseconds" << endl;
 
     auto start3 = high_resolution_clock::now();
-    std::mergeSort(items.begin(), items.end());
+    std::stable_sort(items.begin(), items.end());
     auto end3 = high_resolution_clock::now();
     auto duration3 = duration_cast<std::chrono::microseconds>(end3 - start3);
-    cout << "The array print with mergesort took: " << duration3.count() << " microseconds" << endl;
+    cout << "The array print with stable sort took: " << duration3.count() << " microseconds" << endl;
 } 
-
-
 
 
 int itemPrice(int items[], int amount) {
@@ -81,7 +79,6 @@ int itemPrice(int items[], int amount) {
 
     while(1) {
         sorted = 0; //checks if array is sorted or not
-
         for (int i = 0; i < amount-1; i++) {
             if(items[i] > items[i+1]) { // if items[i] is greater than next index, swap using temp variables 
                 if (items[i] > 50) {    // If items cost is greater than 50, do another sort here similar to top
@@ -115,21 +112,7 @@ int itemPrice(int items[], int amount) {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Merge sort class added, but not implemented 
 template <typename Comparable>
 void mergeSort(vector<Comparable>& a,
     vector<Comparable>& tmpArray, int left, int right)
@@ -142,10 +125,7 @@ void mergeSort(vector<Comparable>& a,
         merge(a, tmpArray, left, center + 1, right);
     }
 }
-
-/**
- * Mergesort algorithm (driver).
- */
+// Driver for mergesort
 template <typename Comparable>
 void mergeSort(vector<Comparable>& a)
 {
@@ -153,8 +133,6 @@ void mergeSort(vector<Comparable>& a)
 
     mergeSort(a, tmpArray, 0, a.size() - 1);
 }
-
-
 /**
  * Internal method that merges two sorted halves of a subarray.
  * a is an array of Comparable items.
