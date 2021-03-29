@@ -74,10 +74,8 @@ int itemPrice(int items[], int amount) {
     int amount = 1000;
     int items[amount];
 
-    cout << "Original Items Cost List\n";
     for(int i = 0; i < amount; i++) {
         items[i] = rand()% 100 + 1;
-        cout << items[i] << " ";
     }
 
     while(1) {
@@ -108,10 +106,5 @@ int itemPrice(int items[], int amount) {
             break;
         }
     }
-
-    cout << "Sorted Item Cost List\n";
-    for (int i = 0; i < amount; i++) {
-        cout << items[i] << " " << endl;
-    }
-	return 0;
+    return 0;
 }
